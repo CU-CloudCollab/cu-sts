@@ -3,6 +3,7 @@ cu-sts interacts with Cornell's existing Shibboleth+DUO AWS integration to creat
 
 # Requirements
 - Chrome >= 59 (cu-sts uses Headless Chrome in the background)
+- The `shib-*` role must include `https://signin-sts.aws.cucloud.net/login/` in the trust relationship `SAML:aud` conditions. Contact `cloud-support@cornell.edu` for help with this change.
 
 # Installation
 Download the [latest release](https://github.com/ian-d/cu-sts/releases). Releases are available for OS X, Linux, and Windows (experimental).
