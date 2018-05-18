@@ -1,4 +1,3 @@
-// Ogranizes functions for checking / interacting with DUO iframe.
 package idp
 
 import (

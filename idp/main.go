@@ -1,8 +1,5 @@
-// NOTES
-// https://github.com/yogesh-desai/WebCrawlerTokopedia/blob/47e9309eb964f34ccf38b410aaf44514e6d208d8/main.go
-// https://github.com/zqqiang/go-capwap/blob/0f6e2f2533299013f675cf62dd54afa469f77dab/ac/tools/chromedp/testcase.go
-//
-// https://github.com/go-ini/ini
+// Package idp contains the chromedp / headless tasks to navigate the IdP Shib+DUO pages
+// and return the base-64 encoded SAMLAssertion.
 package idp
 
 import (
@@ -19,6 +16,7 @@ import (
 	"github.com/howeyc/gopass"
 )
 
+// Chrome holds the chromedp Chrome instance and root context for tasks.
 type Chrome struct {
 	Ctxt   context.Context
 	C      *chromedp.CDP
@@ -28,6 +26,8 @@ type Chrome struct {
 var chrome Chrome
 var timeoutContext context.Context
 
+// GetSAMLResponse takes a NetID and Password and gets the base-64 encoded
+// SAMLResponse from the final signin-sts.aws.cucloud.net POST.
 func GetSAMLResponse(username, password, duoMethod string, response *string) error {
 	var err error
 
@@ -62,10 +62,10 @@ func GetSAMLResponse(username, password, duoMethod string, response *string) err
 	}
 
 	// register SIGINT handler to make sure we cleanup chrome
-	signal_chan := make(chan os.Signal, 1)
-	signal.Notify(signal_chan, syscall.SIGINT)
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT)
 	go func() {
-		for _ = range signal_chan {
+		for _ = range signalChan {
 			exitChromeQuietly()
 			os.Exit(1)
 		}

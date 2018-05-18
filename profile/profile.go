@@ -1,3 +1,4 @@
+// Package profile provides functions accessing profiles in cu-sts config file.
 package profile
 
 import (
@@ -9,6 +10,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// A Profile represents a single profile from the config file.
 type Profile struct {
 	Name       string
 	Account    string `mapstructure:"account"`
@@ -17,10 +19,12 @@ type Profile struct {
 	Duration   int    `mapstructure:"duration"`
 }
 
+// Profiles returns all profiles from the loaded viper config file.
 func Profiles() map[string]interface{} {
 	return viper.GetStringMap("profile")
 }
 
+// New returns an "empty" Profile with defailt IDProvider and Duration values.
 func New() Profile {
 	return Profile{
 		IDProvider: "cornell_idp",
@@ -28,6 +32,7 @@ func New() Profile {
 	}
 }
 
+// NewFromConfig returns a Profile with values set from default, config, or flags.
 func NewFromConfig(name string) (Profile, error) {
 	p := New()
 	p.Name = name
@@ -61,6 +66,7 @@ func NewFromConfig(name string) (Profile, error) {
 	return p, nil
 }
 
+// Validate ensures a Profile's Account and Role are set.
 func (p *Profile) Validate() error {
 	if p.Account == "" {
 		return fmt.Errorf(`missing required key "account"`)
@@ -71,6 +77,8 @@ func (p *Profile) Validate() error {
 	return nil
 }
 
+// Credentials requires a base-64 SAMLAssertion and returns AWS sts.Credentials
+// using the Profile's role, idprovider, etc.
 func (p *Profile) Credentials(samlAssertion string) (*sts.Credentials, error) {
 	principalArn := fmt.Sprintf("arn:aws:iam::%s:saml-provider/%s", p.Account, p.IDProvider)
 	roleArn := fmt.Sprintf("arn:aws:iam::%s:role/%s", p.Account, p.Role)

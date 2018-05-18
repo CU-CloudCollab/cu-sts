@@ -1,4 +1,3 @@
-// Ogranizes functions for checking / interacting with Cornell IdP login pages.
 package idp
 
 import (
