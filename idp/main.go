@@ -5,6 +5,7 @@ package idp
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -28,7 +29,7 @@ var timeoutContext context.Context
 
 // GetSAMLResponse takes a NetID and Password and gets the base-64 encoded
 // SAMLResponse from the final signin-sts.aws.cucloud.net POST.
-func GetSAMLResponse(username, password, duoMethod string, response *string) error {
+func GetSAMLResponse(username, password, duoMethod string, debug bool, response *string) error {
 	var err error
 
 	if password == "" {
@@ -48,15 +49,27 @@ func GetSAMLResponse(username, password, duoMethod string, response *string) err
 	)
 	defer chrome.Cancel()
 
-	chrome.C, err = chromedp.New(chrome.Ctxt,
-		chromedp.WithRunnerOptions(
-			runner.Flag("disable-web-security", true),
-			runner.Flag("headless", true),
-			runner.Flag("no-first-run", true),
-			runner.Flag("no-default-browser-check", true),
-		),
-		//chromedp.WithLog(log.Printf),
-	)
+	if !debug {
+		chrome.C, err = chromedp.New(chrome.Ctxt,
+			chromedp.WithRunnerOptions(
+				runner.Flag("disable-web-security", true),
+				runner.Flag("headless", true),
+				runner.Flag("no-first-run", true),
+				runner.Flag("no-default-browser-check", true),
+			),
+		)
+	} else {
+		chrome.C, err = chromedp.New(chrome.Ctxt,
+			chromedp.WithRunnerOptions(
+				runner.Flag("disable-web-security", true),
+				runner.Flag("headless", true),
+				runner.Flag("no-first-run", true),
+				runner.Flag("no-default-browser-check", true),
+			),
+			chromedp.WithLog(log.Printf),
+		)
+	}
+
 	if err != nil {
 		return fmt.Errorf("Unable to start a chrome instance: %s\n.", err)
 	}

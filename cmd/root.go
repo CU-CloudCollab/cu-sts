@@ -23,6 +23,7 @@ var (
 	singleProfileFlag string
 	profiles          []profile.Profile
 	duoMethod         string
+	debug             bool
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -30,7 +31,7 @@ var rootCmd = &cobra.Command{
 	Use:              "cu-sts",
 	Short:            "Fetch AWS STS credentials via Cornell IdP + DUO.",
 	Long:             ``,
-	Version:          `0.0.1`,
+	Version:          `0.0.2`,
 	PersistentPreRun: validateRootArgs,
 }
 
@@ -53,6 +54,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&role, "role", "", "name of the role")
 	rootCmd.PersistentFlags().IntVar(&duration, "duration", 3600, "requested duration of credentials, in seconds")
 	rootCmd.PersistentFlags().StringVar(&idProvider, "id-provider", "cornell_idp", "name of the Identity Provider in IAM")
+	rootCmd.PersistentFlags().BoolVar(&debug, "debug", false, "enable Chrome debug output to STDERR")
 
 	rootCmd.PersistentFlags().StringSliceVar(&profilesFlag, "profiles", nil, "profiles to get STS credentials for")
 	rootCmd.PersistentFlags().StringVar(&singleProfileFlag, "profile", "", "single profile to get STS credentials for")
