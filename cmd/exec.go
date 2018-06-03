@@ -64,7 +64,7 @@ func execCommand(cmd *cobra.Command, args []string) {
 	p := profiles[0]
 
 	var SAMLResponse string
-	if err := idp.GetSAMLResponse(username, password, duoMethod, &SAMLResponse); err != nil {
+	if err := idp.GetSAMLResponse(username, password, duoMethod, debug, &SAMLResponse); err != nil {
 		fatalError(fmt.Sprintf("failed to fetch credentials via IdP %v\n", err))
 		os.Exit(1)
 	}

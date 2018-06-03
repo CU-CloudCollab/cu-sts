@@ -70,7 +70,7 @@ func credsCommand(cmd *cobra.Command, args []string) {
 	var duoMethod = viper.GetString("duo_method")
 
 	var SAMLResponse string
-	if err := idp.GetSAMLResponse(username, password, duoMethod, &SAMLResponse); err != nil {
+	if err := idp.GetSAMLResponse(username, password, duoMethod, debug, &SAMLResponse); err != nil {
 		fatalError(fmt.Sprintf("failed to fetch credentials via IdP: %v\n", err))
 	}
 
