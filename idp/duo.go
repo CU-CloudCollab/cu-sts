@@ -28,10 +28,20 @@ func submitAuthMethod(authMethod string) error {
 }
 
 func waitForFrame() (bool, error) {
-	// busy wait until the frame loads or > ~20seconds
+	// busy wait until the frame loads or > ~40seconds
+	// for multi-device users the frame load might be "partial" w/ a checkbox available
+	// before the buttons, so we check for both to be safe.
 	for i := 0; i < 20; i++ {
 		// "Remember me.." checkbox
 		if ok := isPresent(`//input[@name='dampen_choice']`); ok {
+			break
+		}
+		time.Sleep(1 * time.Second)
+	}
+
+	// busy wait for a button
+	for i := 0; i < 20; i++ {
+		if ok := isPresent(`//button[contains(., 'Push') or contains(., 'Call')]`); ok {
 			return ok, nil
 		}
 		time.Sleep(1 * time.Second)
