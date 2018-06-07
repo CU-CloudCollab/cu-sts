@@ -31,7 +31,7 @@ var rootCmd = &cobra.Command{
 	Use:              "cu-sts",
 	Short:            "Fetch AWS STS credentials via Cornell IdP + DUO.",
 	Long:             ``,
-	Version:          `0.0.1`,
+	Version:          `0.0.3`,
 	PersistentPreRun: validateRootArgs,
 }
 
