@@ -1,4 +1,7 @@
 # cu-sts
+
+**2021-03-01: Changes to Cornell's infrastructure have resulted in making this tool unusable. See [Cornell Cloud Services](https://confluence.cornell.edu/x/AozDEg) for latest in MFA for AWS CLI.**
+
 cu-sts interacts with Cornell's existing Shibboleth+DUO AWS integration to create temporary STS credentials from your existing `shib-*` groups. This allows you to avoid making IAM users and permanent keys while still using existing AD group membership.
 
 # Requirements
